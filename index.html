@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>个人知识库 · 第二大脑</title>
+    <link rel="stylesheet" href="tooplate-graphite-creative.css">
+    <style>
+        /* 针对知识库功能的少量额外样式，不影响模板核心 */
+        .knowledge-stats {
+            display: flex;
+            gap: 2rem;
+            margin-top: 2rem;
+            flex-wrap: wrap;
+        }
+        .stat-card {
+            background: rgba(255,255,255,0.05);
+            border-left: 3px solid var(--primary-color, #c0a0a0);
+            padding: 1rem 1.5rem;
+            border-radius: 4px;
+            flex: 1;
+            min-width: 120px;
+        }
+        .stat-number {
+            font-size: 2.2rem;
+            font-weight: 700;
+            line-height: 1;
+            color: #fff;
+        }
+        .stat-label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #aaa;
+        }
+        .tag-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin: 1.5rem 0 0;
+        }
+        .tag {
+            background: rgba(255,255,255,0.08);
+            padding: 0.3rem 0.9rem;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            transition: all 0.2s;
+        }
+        .tag:hover {
+            background: var(--primary-color, #c0a0a0);
+            color: #000;
+        }
+        .hero-left .cta-button {
+            margin-top: 1rem;
+        }
+    </style>
+<!--
+    模板来源: Tooplate 2156 Graphite Creative
+    改编为: 个人知识库「第二大脑」
+    保留原始设计系统与交互
+-->
+</head>
+<body>
+    <header>
+        <div class="header-container">
+            <a href="#" class="logo-area" onclick="scrollToTop(); return false;">
+                <div class="logo-vector">🧠</div>
+                <div class="logo-text">
+                    <h1>第二大脑</h1>
+                    <p>个人知识库 · 持续进化</p>
+                </div>
+            </a>
+            <nav>
+                <a href="#home" class="active">首页</a>
+                <a href="#notes">知识笔记</a>
+                <a href="#resources">资源收藏</a>
+                <a href="#about">关于</a>
+                <a href="#contact">提交想法</a>
+            </nav>
+            <button class="menu-toggle" aria-label="Toggle menu">
+                <span></span><span></span><span></span>
+            </button>
+        </div>
+    </header>
+
+    <main>
+        <!-- HERO 区域: 个人知识库介绍 -->
+        <section id="home" class="section-hero">
+            <div class="hero-container">
+                <div class="hero-left">
+                    <div class="hero-line"></div>
+                    <h2>构建你的第二大脑</h2>
+                    <p>收集灵感 · 整理知识 · 沉淀思考。这里是我个人知识管理的数字花园，记录学习、阅读与项目中的一切收获。</p>
+                    <a href="#notes" class="cta-button">浏览笔记</a>
+                    <div class="knowledge-stats">
+                        <div class="stat-card">
+                            <div class="stat-number" id="statNotes">0</div>
+                            <div class="stat-label">知识笔记</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="statResources">0</div>
+                            <div class="stat-label">优质资源</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">∞</div>
+                            <div class="stat-label">持续生长</div>
+                        </div>
+                    </div>
+                    <div class="tag-cloud">
+                        <span class="tag">#生产力</span>
+                        <span class="tag">#编程</span>
+                        <span class="tag">#设计思维</span>
+                        <span class="tag">#AI工具</span>
+                        <span class="tag">#阅读笔记</span>
+                    </div>
+                </div>
+                <div class="slider-container">
+                    <div class="slide active" data-fallback="知识库插画">
+                        <img src="images/tooplate-creative-01.jpg" alt="知识管理">
+                    </div>
+                    <div class="slide" data-fallback="学习场景">
+                        <img src="images/tooplate-creative-02.jpg" alt="学习与整理">
+                    </div>
+                    <div class="slide" data-fallback="数字花园">
+                        <img src="images/tooplate-creative-03.jpg" alt="数字花园">
+                    </div>
+                    <div class="slider-dots">
+                        <div class="dot active" onclick="currentSlide(0)"></div>
+                        <div class="dot" onclick="currentSlide(1)"></div>
+                        <div class="dot" onclick="currentSlide(2)"></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 笔记区域: 利用 Services 卡片风格展示知识笔记列表 -->
+        <section id="notes" class="section-services">
+            <div class="services-container">
+                <h2 class="section-title">📝 近期知识笔记</h2>
+                <div class="services-grid" id="notesGrid">
+                    <!-- 笔记卡片会由JS动态渲染，同时保持静态内容以备无JS环境 -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 资源收藏区: 利用 Portfolio 网格展示链接/书签 -->
+        <section id="resources" class="section-portfolio">
+            <div class="portfolio-container">
+                <h2 class="section-title">🔖 优质资源 · 数字书架</h2>
+                <div class="portfolio-grid" id="resourcesGrid"></div>
+            </div>
+        </section>
+
+        <!-- 关于区: 个人知识库愿景 -->
+        <section id="about" class="section-about">
+            <h2 class="section-title">关于这座数字花园</h2>
+            <div class="about-container">
+                <div class="about-content">
+                    <h3>为什么建立个人知识库？</h3>
+                    <p>在信息过载的时代，我们需要一个外部系统来存放想法、笔记和灵感。这个网站是我使用“第二大脑”理念的实践：将学到的知识整理、关联并复利成长。所有笔记与资源均经过个人筛选与消化，希望也能给你带来启发。</p>
+                    <p>目前包含 <strong id="aboutNoteCount">0</strong> 篇笔记和 <strong id="aboutResCount">0</strong> 条资源链接。我会持续更新，保持思考的连贯性。</p>
+                    <p>本站基于开源模板 <a href="about-tooplate.html">Graphite Creative</a> 改造，保留了深色主题与流畅交互，内容完全个人化。</p>
+                </div>
+                <div class="about-blocks">
+                    <div class="about-block">
+                        <h4>✨ 持续输入</h4>
+                        <p>每周精读文章、书籍、课程，提炼核心笔记。</p>
+                    </div>
+                    <div class="about-block">
+                        <h4>🛠️ 实践输出</h4>
+                        <p>笔记附带可操作案例、代码片段或工具推荐。</p>
+                    </div>
+                    <div class="about-block">
+                        <h4>🌱 互联思考</h4>
+                        <p>通过标签和链接让知识产生化学反应。</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 联系/提交想法区 -->
+        <section id="contact" class="section-contact">
+            <div class="contact-container">
+                <div class="contact-info">
+                    <h3>📬 提交你的想法</h3>
+                    <p>如果你有好的书籍、工具推荐，或是想交流的知识领域，欢迎留下信息。我会定期查看并整理进知识库（此表单为前端演示）。</p>
+                    <div class="contact-details">
+                        <div class="contact-item">
+                            <label>Email</label>
+                            <a href="#">secondbrain@mykb.me</a>
+                        </div>
+                        <div class="contact-item">
+                            <label>Twitter/X</label>
+                            <a href="#">@my_knowledge</a>
+                        </div>
+                        <div class="contact-item">
+                            <label>更新频率</label>
+                            <p>每周五 · 数字花园更新</p>
+                        </div>
+                    </div>
+                </div>
+                <form class="contact-form" onsubmit="handleSubmit(event)">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">称呼</label>
+                            <input type="text" id="name" name="name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">你的邮箱</label>
+                            <input type="email" id="email" name="email" required>
+                        </div>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="subject">建议 / 资源推荐</label>
+                        <input type="text" id="subject" name="subject" required>
+                    </div>
+                    <div class="form-group full-width">
+                        <label for="message">详细内容</label>
+                        <textarea id="message" name="message" rows="4" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">提交想法</button>
+                </form>
+            </div>
+        </section>
+
+        <!-- 模态框 (复用于资源详情) -->
+        <div id="portfolioModal" class="portfolio-modal">
+            <div class="modal-content">
+                <button class="modal-close" onclick="closePortfolioModal()">&times;</button>
+                <img id="modalImage" src="" alt="" class="modal-image">
+                <div class="modal-details">
+                    <h3 id="modalTitle"></h3>
+                    <p id="modalCategory"></p>
+                    <p id="modalDescription"></p>
+                    <ul id="modalFeatures"></ul>
+                    <a href="#" id="modalVisitBtn" class="modal-visit-btn" target="_blank">访问资源</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>© 2026 第二大脑 · 个人知识库 | 基于 <a href="https://www.tooplate.com/" target="_blank" rel="nofollow">Tooplate Graphite</a> 构建 | 持续整理中 🧩</p>
+    </footer>
+
+    <script>
+        // ---------- 知识库数据模型 ----------
+        const notesData = [
+            { id: 1, title: "卡片盒笔记法实践", summary: "用原子化笔记和双向链接构建知识网络，告别碎片收藏。", tags: "方法论 / 生产力" },
+            { id: 2, title: "AI 提示词工程入门", summary: "结构化提示词、角色扮演与思维链 (CoT) 的简单应用。", tags: "AI / 工具" },
+            { id: 3, title: "《深度工作》阅读笔记", summary: "专注力的科学：如何在高干扰环境下创造高质量产出。", tags: "阅读 / 效率" },
+            { id: 4, title: "前端性能优化 checklist", summary: "图片懒加载、代码分割、Core Web Vitals 实践经验。", tags: "编程 / 前端" },
+            { id: 5, title: "设计系统搭建原则", summary: "从原子设计理论到组件库维护，保持视觉一致性。", tags: "设计 / 系统" },
+            { id: 6, title: "Notion 数据库高阶用法", summary: "关联、汇总、自动化视图，打造个人CRM与任务看板。", tags: "工具 / 管理" }
+        ];
+        
+        const resourcesData = [
+            { id: 1, title: "Learn Anything", category: "知识引擎", description: "交互式知识图谱，帮你发现任何主题的学习路径。", features: ["开源社区驱动", "可视化路径", "免费访问"], url: "https://learn-anything.xyz/", imgFallback: "images/tooplate-creative-21.jpg" },
+            { id: 2, title: "Obsidian 中文教程", category: "工具 / 笔记", description: "全面的双向链接笔记软件指南，从基础到插件生态。", features: ["本地化存储", "图谱视图", "社区插件"], url: "https://publish.obsidian.md/", imgFallback: "images/tooplate-creative-22.jpg" },
+            { id: 3, title: "MDN Web Docs", category: "编程 / 文档", description: "权威的Web技术文档，含HTML、CSS、JavaScript及最新API。", features: ["标准维护", "示例代码", "兼容性表格"], url: "https://developer.mozilla.org/", imgFallback: "images/tooplate-creative-23.jpg" },
+            { id: 4, title: "Superhuman 邮件哲学", category: "效率", description: "极致邮件处理的心法与快捷键设计，提升信息处理效率。", features: ["零收件箱", "快捷操作", "专注模式"], url: "https://superhuman.com/", imgFallback: "images/tooplate-creative-24.jpg" },
+            { id: 5, title: "Are.na 灵感收藏", category: "创意", description: "可视化灵感收集平台，通过「块」和「通道」构建知识流。", features: ["无算法推荐", "手动整理", "社区共建"], url: "https://www.are.na/", imgFallback: "images/tooplate-creative-25.jpg" },
+            { id: 6, title: "Toggl Track 时间记录", category: "工具", description: "轻量级时间追踪，分析知识管理的时间投入分布。", features: ["跨平台", "报表分析", "番茄钟"], url: "https://toggl.com/track/", imgFallback: "images/tooplate-creative-26.jpg" }
+        ];
+
+        // 渲染笔记卡片 (服务网格风格)
+        function renderNotes() {
+            const container = document.getElementById('notesGrid');
+            if (!container) return;
+            container.innerHTML = notesData.map(note => `
+                <div class="service-card">
+                    <div class="service-number">📘</div>
+                    <h3>${escapeHtml(note.title)}</h3>
+                    <p>${escapeHtml(note.summary)}</p>
+                    <div style="margin-top: 0.8rem; font-size: 0.7rem; color: #aaa;">${escapeHtml(note.tags)}</div>
+                </div>
+            `).join('');
+            document.getElementById('statNotes').innerText = notesData.length;
+            document.getElementById('aboutNoteCount').innerText = notesData.length;
+        }
+        
+        // 渲染资源收藏 (作品集网格 + 模态框数据)
+        function renderResources() {
+            const container = document.getElementById('resourcesGrid');
+            if (!container) return;
+            container.innerHTML = resourcesData.map(res => `
+                <div class="portfolio-item" data-res-id="${res.id}">
+                    <img src="${res.imgFallback}" alt="${escapeHtml(res.title)}" loading="lazy">
+                    <div class="portfolio-label">
+                        <h3>${escapeHtml(res.title)}</h3>
+                        <p>${escapeHtml(res.category)}</p>
+                    </div>
+                    <div class="portfolio-data" hidden>
+                        <p class="description">${escapeHtml(res.description)}</p>
+                        <ul class="features">
+                            ${res.features.map(f => `<li>${escapeHtml(f)}</li>`).join('')}
+                        </ul>
+                        <a href="${res.url}" class="visit-url" target="_blank">访问资源</a>
+                    </div>
+                </div>
+            `).join('');
+            document.getElementById('statResources').innerText = resourcesData.length;
+            document.getElementById('aboutResCount').innerText = resourcesData.length;
+            
+            // 重新绑定作品集点击事件 (使用模板原有的模态框逻辑)
+            attachPortfolioEvents();
+        }
+        
+        function attachPortfolioEvents() {
+            const items = document.querySelectorAll('.portfolio-item');
+            items.forEach(item => {
+                item.removeEventListener('click', portfolioClickHandler);
+                item.addEventListener('click', portfolioClickHandler);
+            });
+        }
+        
+        function portfolioClickHandler(e) {
+            // 防止点到内部链接冒泡
+            if (e.target.closest('.visit-url')) return;
+            const dataDiv = this.querySelector('.portfolio-data');
+            if (!dataDiv) return;
+            
+            const titleElem = this.querySelector('.portfolio-label h3');
+            const catElem = this.querySelector('.portfolio-label p');
+            const title = titleElem ? titleElem.innerText : '';
+            const category = catElem ? catElem.innerText : '';
+            const description = dataDiv.querySelector('.description')?.innerHTML || '';
+            const features = Array.from(dataDiv.querySelectorAll('.features li')).map(li => li.innerHTML);
+            const url = dataDiv.querySelector('.visit-url')?.getAttribute('href') || '#';
+            const imgSrc = this.querySelector('img')?.getAttribute('src') || '';
+            
+            document.getElementById('modalTitle').innerText = title;
+            document.getElementById('modalCategory').innerText = category;
+            document.getElementById('modalDescription').innerHTML = description;
+            const featuresUl = document.getElementById('modalFeatures');
+            featuresUl.innerHTML = features.map(f => `<li>${f}</li>`).join('');
+            const visitBtn = document.getElementById('modalVisitBtn');
+            if (visitBtn) visitBtn.href = url;
+            const modalImg = document.getElementById('modalImage');
+            if (modalImg) modalImg.src = imgSrc;
+            
+            const modal = document.getElementById('portfolioModal');
+            if (modal) modal.style.display = 'flex';
+        }
+        
+        function closePortfolioModal() {
+            const modal = document.getElementById('portfolioModal');
+            if (modal) modal.style.display = 'none';
+        }
+        
+        // 辅助函数
+        function escapeHtml(str) {
+            if (!str) return '';
+            return str.replace(/[&<>]/g, function(m) {
+                if (m === '&') return '&amp;';
+                if (m === '<') return '&lt;';
+                if (m === '>') return '&gt;';
+                return m;
+            }).replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, function(c) {
+                return c;
+            });
+        }
+        
+        function handleSubmit(e) {
+            e.preventDefault();
+            alert('📬 感谢提交！这是一个演示前端，你的想法已记录（实际开发可对接后端或数据库）。');
+            e.target.reset();
+        }
+        
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // 暴露全局函数供HTML调用
+        window.closePortfolioModal = closePortfolioModal;
+        window.handleSubmit = handleSubmit;
+        window.scrollToTop = scrollToTop;
+        window.currentSlide = function(index) {
+            // 简单的轮播指示器适配（保留原有滑块功能）
+            const slides = document.querySelectorAll('.slide');
+            const dots = document.querySelectorAll('.dot');
+            if (!slides.length) return;
+            slides.forEach((s, i) => {
+                s.classList.toggle('active', i === index);
+            });
+            dots.forEach((d, i) => {
+                d.classList.toggle('active', i === index);
+            });
+        };
+        
+        // 初始化页面
+        renderNotes();
+        renderResources();
+        
+        // 保留原有滑块自动轮播 (避免和原有冲突，尽量保留原有脚本功能)
+        if (typeof initSlider === 'undefined') {
+            let slideIndex = 0;
+            const slides = document.querySelectorAll('.slide');
+            if (slides.length > 1) {
+                setInterval(() => {
+                    slideIndex = (slideIndex + 1) % slides.length;
+                    if (window.currentSlide) window.currentSlide(slideIndex);
+                }, 5000);
+            }
+        }
+    </script>
+    <script src="tooplate-graphite-script.js"></script>
+</body>
+</html>
